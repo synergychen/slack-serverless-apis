@@ -22,13 +22,13 @@ functions:
     handler: handler.handleFarmingResultsEvents
     name: ${self:service}-farming-results-events
     events:
-      - httpApi:
+      - httpApi: # HTTP API for events
           method: post
           path: /slack/channels/farming-results/events
   farmingResultsInteractiveActions:
     handler: handler.handleFarmingResultsInteractiveActions
     name: ${self:service}-farming-results-interactive-actions
     events:
-      - http:
+      - http: # REST API for interactive actions
           method: post
           path: /slack/channels/farming-results/interactive-actions

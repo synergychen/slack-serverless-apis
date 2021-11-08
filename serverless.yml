@@ -25,3 +25,10 @@ functions:
       - httpApi:
           method: post
           path: /slack/channels/farming-results/events
+  farmingResultsInteractiveActions:
+    handler: handler.handleFarmingResultsInteractiveActions
+    name: ${self:service}-farming-results-interactive-actions
+    events:
+      - http:
+          method: post
+          path: /slack/channels/farming-results/interactive-actions

@@ -1,4 +1,4 @@
-service: farming-results
+service: slack-apis
 frameworkVersion: '2'
 custom:
   secrets: ${file(secrets.json)}
@@ -18,10 +18,10 @@ provider:
     SLACK_API_URL: ${self:custom.secrets.SLACK_API_URL}
     VERIFICATION_TOKEN: ${self:custom.secrets.VERIFICATION_TOKEN}
 functions:
-  slackEvents:
-    handler: handler.slackEvents
-    name: ${self:service}-slack-events
+  farmingResultsEvents:
+    handler: handler.handleFarmingResultsEvents
+    name: ${self:service}-farming-results-events
     events:
       - httpApi:
           method: post
-          path: /farming_results/slack/events
+          path: /slack/channels/farming-results/events

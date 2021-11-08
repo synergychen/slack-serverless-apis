@@ -1,15 +1,16 @@
-// Verify Url - https://api.slack.com/events/url_verification
+const axios = require('axios')
+
 function verify(data, callback) {
-  console.log(`token: ${data.token}`)
-  if (data.token === process.env.VERIFICATION_TOKEN)
+  if (data.token === process.env.VERIFICATION_TOKEN) {
     callback(null, data.challenge)
-  else callback('verification failed')
+  } else {
+    callback('verification failed')
+  }
 }
 
-// Post message to Slack - https://api.slack.com/methods/chat.postMessage
 function eventHandler(event, callback) {
-  // test the message for a match and not a bot
-  if (!event.bot_id && /(aws|lambda)/gi.test(event.text)) {
+  const containsKeyword = /(aws|lambda)/gi.test(event.text)
+  if (!event.bot_id && containsKeyword) {
     const text = `<@${event.user}> isn't AWS Lambda awesome?`
     postToSlack(text)
   }
@@ -21,12 +22,13 @@ function postToSlack(message) {
   const postData = {
     text: message
   }
-  console.log(postData)
+  axios.post(process.env.SLACK_API_URL, postData)
 }
 
-module.exports.slackEvents = async (event, context, callback) => {
+module.exports.handleFarmingResultsEvents = async (event, context, callback) => {
   try {
     const data = JSON.parse(event.body)
+    console.log('New event: ', data)
     switch (data.type) {
       case 'url_verification':
         verify(data, callback)
